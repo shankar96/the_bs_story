@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Barsha 💖 Always</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top,#ff4d6d,#ff9a9e);
+    font-family: 'Comic Sans MS', cursive;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box {
+    background: #fff;
+    padding: 26px;
+    border-radius: 26px;
+    text-align: center;
+    box-shadow: 0 30px 60px rgba(0,0,0,.35);
+    max-width: 380px;
+    animation: pop .8s ease;
+    z-index: 2;
+}
+
+@keyframes pop {
+    from {transform: scale(.7); opacity:0}
+    to {transform: scale(1); opacity:1}
+}
+
+h1 { color:#ff1f5a; }
+p  { color:#444; font-size:18px }
+
+button {
+    padding: 12px 30px;
+    font-size: 18px;
+    border-radius: 30px;
+    border: none;
+    margin: 10px;
+    cursor: pointer;
+}
+
+#yes {
+    background:#ff1f5a;
+    color:#fff;
+}
+
+#no {
+    background:#ddd;
+    position:absolute;
+}
+
+#celebrate { display:none }
+
+.slideshow {
+    position: relative;
+    height: 220px;
+    margin-top: 15px;
+}
+
+.slideshow img {
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:16px;
+    opacity:0;
+    transition:opacity 1.5s ease;
+}
+
+.slideshow img.active { opacity:1 }
+
+.heart {
+    position: fixed;
+    font-size: 22px;
+    animation: float 6s linear forwards;
+    pointer-events:none;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); opacity:1 }
+    to   { transform: translateY(-10vh); opacity:0 }
+}
+
+#typeText {
+    font-size: 19px;
+    color:#ff1f5a;
+    margin-top:10px;
+    min-height:60px;
+}
+canvas {
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<audio id="music" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<div class="box" id="question">
+    <h1>Barsha 💖</h1>
+    <p>Will you be my Valentine… again & forever?</p>
+    <p><i>“Tum meri zindagi ka sabse khoobsurat ehsaas ho….”</i> 🌹</p>
+
+    <button id="yes">YES 😍</button>
+    <button id="no">NO 🙄</button>
+</div>
+
+<div class="box" id="celebrate">
+    <h1>BEST DECISION OF OUR LIFE 💍🎆</h1>
+    <div id="typeText"></div>
+
+    <div class="slideshow">
+        <img src="photo1.jpg" class="active">
+        <img src="photo2.jpg">
+        <img src="photo3.jpg">
+        <img src="photo4.jpg">
+    </div>
+</div>
+
+<script>
+/* NO button escape */
+const noBtn = document.getElementById("no");
+noBtn.addEventListener("mouseover",()=>{
+    noBtn.style.left = Math.random()*80+"vw";
+    noBtn.style.top  = Math.random()*80+"vh";
+});
+
+/* YES action */
+document.getElementById("yes").onclick = ()=>{
+    question.style.display="none";
+    celebrate.style.display="block";
+    music.play();
+    hearts();
+    typeLove();
+    fireworks();
+};
+
+/* Floating hearts */
+function hearts(){
+    setInterval(()=>{
+        const h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML=["💖","❤️","💘","🎆"][Math.floor(Math.random()*4)];
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=Math.random()*20+18+"px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    },180);
+}
+
+/* Typing message (arranged marriage) */
+const msg="From an arranged beginning to a beautiful marriage… I would still choose you every single time ❤️";
+let i=0;
+function typeLove(){
+    const el=typeText;
+    const t=setInterval(()=>{
+        if(i<msg.length) el.innerHTML+=msg.charAt(i++);
+        else clearInterval(t);
+    },60);
+}
+
+/* Slideshow */
+const slides=document.querySelectorAll(".slideshow img");
+let s=0;
+setInterval(()=>{
+    slides.forEach(img=>img.classList.remove("active"));
+    slides[s=(s+1)%slides.length].classList.add("active");
+},3000);
+
+/* Fireworks (simple & smooth) */
+const c=document.getElementById("fireworks"),ctx=c.getContext("2d");
+function resize(){c.width=innerWidth;c.height=innerHeight}
+addEventListener("resize",resize);resize();
+
+function fireworks(){
+    setInterval(()=>{
+        const x=Math.random()*c.width,y=Math.random()*c.height/2;
+        for(let i=0;i<30;i++){
+            ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
+            ctx.beginPath();
+            ctx.arc(x+Math.cos(i)*20,y+Math.sin(i)*20,3,0,Math.PI*2);
+            ctx.fill();
+        }
+        ctx.clearRect(0,0,c.width,c.height);
+    },500);
+}
+</script>
+
+</body>
+</html>

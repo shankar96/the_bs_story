@@ -99,7 +99,42 @@ canvas {
     inset:0;
     pointer-events:none;
 }
+    #slide {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    opacity: 1;
+    transition: opacity 1s ease;
+}
 </style>
+    <script>
+const totalPhotos = 27;
+let index = 1;
+const slide = document.getElementById("slide");
+const delay = 3000; // time each photo stays after load
+
+function changeSlide() {
+    const nextIndex = index % totalPhotos + 1;
+    const img = new Image();
+    img.src = `photo${nextIndex}.jpg`;
+
+    img.onload = () => {
+        slide.style.opacity = 0;
+
+        setTimeout(() => {
+            slide.src = img.src;
+            slide.style.opacity = 1;
+            index = nextIndex;
+
+            setTimeout(changeSlide, delay);
+        }, 600);
+    };
+}
+
+setTimeout(changeSlide, delay);
+</script>
+
 </head>
 
 <body>
@@ -124,10 +159,7 @@ canvas {
     <div id="typeText"></div>
 
     <div class="slideshow">
-        <img src="photo1.jpg" class="active">
-        <img src="photo2.jpg">
-        <img src="photo3.jpg">
-        <img src="photo4.jpg">
+        <img id="slide" src="photo1.jpg">
     </div>
 </div>
 

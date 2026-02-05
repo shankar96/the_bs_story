@@ -107,37 +107,45 @@ canvas {
     transition: opacity 1s ease;
 }
 </style>
+
     <script>
-const totalPhotos = 27;
-const firstDelay = 6000;  // photo1 stays longer (6 sec)
-const normalDelay = 3000; // other photos (3 sec)
+document.addEventListener("DOMContentLoaded", () => {
 
-let index = 1;
-const slide = document.getElementById("slide");
+    const totalPhotos = 27;
+    const firstDelay = 6000;
+    const normalDelay = 3000;
+    let index = 1;
 
-function changeSlide(isFirst = false) {
-    const delay = isFirst ? firstDelay : normalDelay;
-    const nextIndex = index % totalPhotos + 1;
+    function changeSlide(isFirst = false) {
+        const slide = document.getElementById("slide");
+        if (!slide) {
+            console.warn("Slide element not found yet");
+            return;
+        }
 
-    const img = new Image();
-    img.src = `photo${nextIndex}.jpg`;
+        const nextIndex = index % totalPhotos + 1;
+        const img = new Image();
+        img.src = `photo${nextIndex}.jpg`;
 
-    img.onload = () => {
-        slide.style.opacity = 0;
+        img.onload = () => {
+            slide.style.opacity = 0;
 
-        setTimeout(() => {
-            slide.src = img.src;
-            slide.style.opacity = 1;
-            index = nextIndex;
+            setTimeout(() => {
+                slide.src = img.src;
+                slide.style.opacity = 1;
+                index = nextIndex;
 
-            setTimeout(() => changeSlide(false), normalDelay);
-        }, 600);
-    };
-}
+                setTimeout(() => changeSlide(false), normalDelay);
+            }, 600);
+        };
+    }
 
-// Start slideshow → keep photo1 longer
-setTimeout(() => changeSlide(true), firstDelay);
+    // keep photo1 longer
+    setTimeout(() => changeSlide(true), firstDelay);
+
+});
 </script>
+
 
 
 </head>
@@ -210,13 +218,13 @@ function typeLove(){
     },60);
 }
 
-/* Slideshow */
-const slides=document.querySelectorAll(".slideshow img");
-let s=0;
-setInterval(()=>{
-    slides.forEach(img=>img.classList.remove("active"));
-    slides[s=(s+1)%slides.length].classList.add("active");
-},3000);
+// /* Slideshow */
+// const slides=document.querySelectorAll(".slideshow img");
+// let s=0;
+// setInterval(()=>{
+//     slides.forEach(img=>img.classList.remove("active"));
+//     slides[s=(s+1)%slides.length].classList.add("active");
+// },3000);
 
 /* Fireworks (simple & smooth) */
 const c=document.getElementById("fireworks"),ctx=c.getContext("2d");

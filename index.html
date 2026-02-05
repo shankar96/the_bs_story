@@ -74,7 +74,6 @@ button {
     transition:opacity 1.5s ease;
 }
 
-.slideshow img.active { opacity:1 }
 
 .heart {
     position: fixed;
@@ -110,12 +109,16 @@ canvas {
 </style>
     <script>
 const totalPhotos = 27;
+const firstDelay = 6000;  // photo1 stays longer (6 sec)
+const normalDelay = 3000; // other photos (3 sec)
+
 let index = 1;
 const slide = document.getElementById("slide");
-const delay = 3000; // time each photo stays after load
 
-function changeSlide() {
+function changeSlide(isFirst = false) {
+    const delay = isFirst ? firstDelay : normalDelay;
     const nextIndex = index % totalPhotos + 1;
+
     const img = new Image();
     img.src = `photo${nextIndex}.jpg`;
 
@@ -127,13 +130,15 @@ function changeSlide() {
             slide.style.opacity = 1;
             index = nextIndex;
 
-            setTimeout(changeSlide, delay);
+            setTimeout(() => changeSlide(false), normalDelay);
         }, 600);
     };
 }
 
-setTimeout(changeSlide, delay);
+// Start slideshow → keep photo1 longer
+setTimeout(() => changeSlide(true), firstDelay);
 </script>
+
 
 </head>
 
